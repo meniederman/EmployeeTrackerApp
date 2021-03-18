@@ -228,12 +228,11 @@ choices: ['View all employees', 'View all departments', 'View all roles', 'Add a
           
       }
       )
-  }
+  };
 
-const updateRole () => {
-  inquirer.prompt([
-    
-    {
+const updateRole = 
+() => {
+  inquirer.prompt([ {
             
     type: 'input',
     name: 'roleChange',
