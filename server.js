@@ -1,6 +1,6 @@
 const mysql = require('mysql');
 const inquirer = require('inquirer');
-const cTable = require('console.table');
+require('console.table');
 
 const connection = mysql.createConnection({
     host: 'localhost',
@@ -10,15 +10,16 @@ const connection = mysql.createConnection({
     database: 'departmentDB',
   });
 
-  const begin = () =>{
+  const start = () => {
       inquirer
-      .prompt({
+      .prompt([
+        {
 name: 'whatAction',
 type: 'list',
 message: 'What action would you like to take with the employee tracker app?',
 choices: ['View all employees', 'View all departments', 'View all roles', 'Add an employee', 'Add a department', 'Add a role', 'Update an employees role', 'EXIT']
-
-      })
+        },
+        ])
 
 .then((answer) => {
     switch (answer.whatAction){
@@ -62,8 +63,12 @@ choices: ['View all employees', 'View all departments', 'View all roles', 'Add a
   };
 
   const viewAll = () => {
-      let viewall_query = `SELECT * FROM departments INNER JOIN eRole ON department.depName = eRole.department_id`;
-      viewall_query += `FROM eRole INNER JOIN employee ON (eRole.title=employee.role_id)`;
+      let viewall_query = `SELECT * department 
+      FROM department INNER JOIN SELECT
+      employee ON (eRole.title = employee.role_id)
+      FROM eRole
+      INNER JOIN SELECT employee ON (department.depName = eRole.department_id);`
+      
       connection.query(viewall_query,
           
           (err, res) => {
@@ -77,33 +82,26 @@ choices: ['View all employees', 'View all departments', 'View all roles', 'Add a
 
   const viewDepartments = () => {
     connection.query(
-      'SELECT * FROM departments WHERE depName=?', (err, res) => {
+      `SELECT department.debName FROM department`,  (err, res) => {
         if (err) throw err;
-        
-        if(res.rows.length > 0){
-        res.forEach(({ depName}) => {
-          console.log(`${depName}`);
-        })
-    }
-
+        const value = (debName)
+        res.forEach( value === TRUE)
     
-  });
+           console.log(res);
+    }
+    )}
 
 
     const viewRole = () => {
         connection.query(
-          'SELECT * FROM eRole WHERE title=?',
-          (err, res) => {
+          `SELECT eRole.title FROM eRole`, (err, res) => {
             if (err) throw err;
-            if(res.rows.length >0){
-            res.forEach(({ title }) => {
-              console.log(`${title}`);
+            const value = (title)
+              res.forEach (value === TRUE)
+              console.log(res);
             });
           };
 
-
-      });
-    }
       const addEmployee = () => {
           inquirer.prompt([
               {
@@ -144,17 +142,17 @@ choices: ['View all employees', 'View all departments', 'View all roles', 'Add a
           ])
           .then((answer) => {
               connection.query(
-                  { firstName : answer.first,
-                    lastName : answer.second,
+                  { first_name : answer.first,
+                    last_name : answer.second,
                     salary : answer.money,
                     title : answer.position,
-                    department : answer.department
+                    debName : answer.department
                   }, 
-                  (err,res) => {if (err) console.log('Error Detected');
-                  res.forEach (answer === TRUE);
-                  console.log(answer);
-
-
+                  (err,database) => {if (err) console.log('Error Detected');
+                  
+                  database.forEach(answer).Console.table();
+              
+              
 
 
                   }
@@ -166,8 +164,123 @@ choices: ['View all employees', 'View all departments', 'View all roles', 'Add a
               
           }
           )
+      };
+
+      const addRole = () => {
+        inquirer.prompt({
+            
+            type: 'input',
+            name: 'roleName',
+            message: 'What is name of the role you wish to add?',
+          
+            
+        })
+        .then((answer) => {
+            connection.query(
+                { newRole : answer.roleName,
+                  
+                }, 
+                (err) => {if (err) console.log('Error Detected');
+                
+                console.table(answer.roleName);
+
+
+
+
+                }
+
+
+
+
+            )
+            
+        }
+        )
+    }
+
+    const addDepartment = () => {
+      inquirer.prompt({
+          
+          type: 'input',
+          name: 'dName',
+          message: 'What is name of the department you wish to add?',
+        
+          
+      })
+      .then((answer) => {
+          connection.query(
+              { newRole : answer.dName,
+                
+              }, 
+              (err) => {if (err) console.log('Error Detected');
+              
+              console.table(answer.dName);
+
+
+
+
+              }
+
+
+
+
+          )
+          
+      }
+      )
+  }
+
+const updateRole () => {
+  inquirer.prompt([
+    
+    {
+            
+    type: 'input',
+    name: 'roleChange',
+    message: 'What is last name of the employees role you wish to change?',
+  
+    
+},
+
+{
+  type: 'input',
+name: 'newPosition',
+message: 'What is the updated role?',
+
+
+},
+
+
+])
+
+
+.then((answer) => {
+  connection.query(`Update employee where title=?` ,
+      { newJob : answer.newPosition,
+        
+      }, 
+      (err) => {if (err) console.log('Error Detected');
+      
+      console.table(answer.newPosition);
+
+
+
+
       }
 
+
+
+
+  )
+  
+}
+)
+
+
+
+
+
+}
 
 
 
@@ -175,7 +288,7 @@ choices: ['View all employees', 'View all departments', 'View all roles', 'Add a
       connection.connect((err) => {
         if (err) throw err;
         console.log(`connected as id ${connection.threadId}`);
-        begin();
+        start();
       }
       );
-    }
+    

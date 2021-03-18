@@ -36,7 +36,7 @@ SELECT * FROM department;
 SELECT * FROM eRole;
 SELECT * FROM employee;
 
-INSERT INTO department (name)
+INSERT INTO department (debName)
 VALUES ("Human Resources");
 
 INSERT INTO role (title, salary, department_id)
@@ -45,3 +45,4 @@ VALUES ("Coordinator", 50000);
 
 INSERT INTO employee (last_name, first_name, role_id)
 VALUES ("Bob", "Smith");
+
